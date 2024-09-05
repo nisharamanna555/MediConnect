@@ -1,0 +1,155 @@
+:root {
+    --theme-color: #34495e;
+    --background-color: #E0F2FE;
+    --table-header-bg: #c8d6e5;
+    --table-border-color: #dee2e6;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    padding-top: 88px;
+    background-color: var(--background-color);
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    color: white;
+    padding-left: 0;
+    align-items: center;
+}
+
+.actions li {
+    font-size: 200%;
+    padding: 8px 20px;
+}
+
+.actions #autoRefill {
+    font-size: 120%;
+}
+
+#userIcon {
+    cursor: pointer;
+}
+
+.hiddenbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    border-radius: 8px;
+    display: none;
+    z-index: 100;
+}
+
+.hiddenlist {
+    list-style: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #ffffff;
+}
+
+.hiddenlist li {
+    font-size: 16px;
+    color: #34495e;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.hiddenlist li:hover {
+    background-color: #f5f5f5;
+    color: #2c3e50;
+}
+
+.hiddenlist a {
+    color: #34495e;
+}
+
+.content {
+    width: 100vw;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.AutoRefill {
+    margin-top: 20px;
+    width: 80%;
+}
+
+.tableHeader {
+    font-size: 150%;
+    color: #212121;
+    padding-bottom: 2%;
+}
+
+.AutoRefill table {
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.AutoRefill table a {
+    color: var(--theme-color);
+}
+
+.AutoRefill table th {
+    background-color: var(--table-header-bg);
+    color: var(--theme-color);
+    padding: 12px;
+    border: 1px solid var(--table-border-color);
+}
+
+.AutoRefill table td {
+    border: 1px solid var(--table-border-color);
+    padding: 8px 12px;
+}
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: initial;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

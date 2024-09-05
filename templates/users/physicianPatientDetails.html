@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/physicianPatientDetails.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+
+    <title>MediConnect</title>
+</head>
+<body id="physicianPatientDetails.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+        <ul class="actions">
+            <li id="searchIcon"><a href="/"><i class="fa-solid fa-magnifying-glass" href="/"></i></a></li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{current_user.username}}</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/patientInfo_nonpatient?id={{ patient_id }}">Personal Information</a></li> 
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <!--content-->
+    <div class="content" id="content">
+        <div class="tableHeader">
+            <h1>{{ patient_info[0]['first_name'] }} {{ patient_info[0]['last_name'] }}'s Current Medications</h1>
+        </div>
+        <div class="patientDetails">
+            <table id="current"></table>
+        </div>
+        <div id="popup">
+            <div id="popupControl"><a id="popupClose">✖</a></div>
+        </div>
+        <div class="tableHeader">
+            <h1>{{ patient_info[0]['first_name'] }} {{ patient_info[0]['last_name'] }}'s Past Medications</h1>
+        </div>
+        <div class="patientDetails">
+            <table id="past"></table>
+        </div>
+        <button id="addMedication">Add Medication</button>
+    </div>
+    <div id="medicationInputs">
+        <form action="/update_medication?patient_id={{patient_id}}" method="POST">
+            <select id="medicationName" name="medicationName"></select>
+            <input type="text" id="dose" name="dose" placeholder="Dose" maxlength="255" required>
+            <input type="text" id="frequency" name="frequency" placeholder="Frequency" maxlength="255" required>
+            <input type="number" id="daysSupply" name="daysSupply" placeholder="Days supply" pattern="[0-9]+" required>
+            <input type="text" id="validTill" name="validTill" placeholder="Valid until (YYYY-MM-DD)" required>
+            <input type="text" id="medicationDate" name="medicationDate" placeholder="Date prescribed (YYYY-MM-DD)" required>
+            <input type="text" id="physNote" name="physNote" placeholder="Physician note" maxlength="255">
+            <input type="submit" id="addConfirm" value="Add Medication">
+            <button id="addCancel">Cancel</button>
+        </form>
+    </div>
+
+
+    <!--js file-->
+    <script>var patient_id = {{patient_id}};</script>
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='script/physicianPatientDetails.js') }}"></script>
+
+</body>
+</html>

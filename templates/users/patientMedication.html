@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    
+    <title>MediConnect</title>
+</head>
+<body id="patientMedication.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+        <ul class="actions">
+            <li><i class="fa-solid fa-bell"></i></li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">First and Last Name</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+             
+            <li><a href="/patient_info">personal information</a></li> 
+            <li><a href="/logout">logout</a></li>         
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content">
+        <h1>{{ name }}</h1>
+    </div>
+    
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+</body>
+</html>

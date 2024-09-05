@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/locales-all.min.js'></script>
+    
+    <title>MediConnect</title>
+</head>
+<body id="patient.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            MediConnect
+        </div>
+        <ul class="actions">
+            <li id="notifications">
+                <i class="fa-solid fa-bell"></i>
+                <div class="alert-menu" id="notification_list" style="display:none;">
+                    {% for alert in alerts %}
+                        <p class="{{ alert.is_read }}"> Your prescription for {{ alert.med_name }} has been refilled at {{ alert.pharmacy_name }}, {{ alert.building_num }} {{ alert.street_name }} {{ alert.city }} {{ alert.state }} {{ alert.zip_code }} </p>
+                    {% endfor %}
+                </div>
+            </li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{ patient_info[0].first_name }} {{ patient_info[0].last_name }}</li>
+        </ul>
+    </nav>
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/patient_info?id={{ patient_id }}">Personal Information</a></li> 
+            <li><a href="/logout">Logout</a></li>         
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content-title">
+        <h1 class="tableHeader">Your Current Medications</h1>
+        <div class="pharmacy">
+            Pharmacy Pick-up: 
+            {% if patient_pharmacy %}
+                <a href="javascript:void(0);" onclick="openMapPopup(); return false;" id="pharm_map">
+                    <strong>{{ patient_pharmacy[0].pharmacy_name }}, {{ patient_pharmacy[0].building_num }} {{ patient_pharmacy[0].street_name }}</strong> <i class="fa-solid fa-map-marked-alt fa-lg"></i>
+                </a>
+                <!-- <p class="pharmacy">Pharmacy Pick-up: <a href="javascript:void(0);" onclick="openMapPopup(); return false;" id="pharm_map">{{ patient_pharmacy[0].pharmacy_name }}, {{ patient_pharmacy[0].building_num }} {{ patient_pharmacy[0].street_name }}</a></p> -->
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+
+        <table class="medicationHistory">
+            <tr>
+                <th>Medication Name</th>
+                <th>Dose</th>
+                <th>Frequency</th>
+                <th>Days Supply</th>
+                <th>Prescription valid until</th>
+                <th>Prescribed By</th>
+            </tr>
+            {% if patient_meds[0] %}
+                {% for med in patient_meds[0] %}
+                    <tr>
+                        <td class="med-name" data-medication-name="{{ med.medication_name }}" data-side-effects="{{ med.side_effects }}" data-note="{{ med.phys_note }}" data-video-url="{{ med.instruction_vid_url }}" onclick="showModal(this.dataset);">
+                            {{ med.medication_name }}
+                        </td>
+                        <td> {{ med.dosage }} </td>
+                        <td> {{ med.frequency }} </td>
+                        <td> {{ med.days_supply }} </td>
+                        <td> {{ med.prescription_valid_till }} </td>
+                        <td> {{ med.first_name }} {{ med.last_name }} </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+    {% if patient_meds[1] %}
+        <div class="content-title">
+            <h1 class="tableHeader">Your Past Medications</h1>
+        </div>
+        <div class="content">
+            <table class="medicationHistory">
+                <tr>
+                    <th>Medication Name</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Days Supply</th>
+                    <th>Prescription valid until</th>
+                    <th>Prescribed By</th>
+                </tr>
+                {% for med in patient_meds[1] %}
+                    <tr>
+                        <td class="med-name" data-medication-name="{{ med.medication_name }}" data-side-effects="{{ med.side_effects }}" data-note="{{ med.phys_note }}" data-video-url="{{ med.instruction_vid_url }}" onclick="showModal(this.dataset);">
+                            {{ med.medication_name }}
+                        </td>
+                        <td> {{ med.dosage }} </td>
+                        <td> {{ med.frequency }} </td>
+                        <td> {{ med.days_supply }} </td>
+                        <td> {{ med.prescription_valid_till }} </td>
+                        <td> {{ med.first_name }} {{ med.last_name }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    <div id="modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModalMed()">&times;</span>
+            <p id="modalMedicationName"><strong>Medication Name:</strong></p>
+            <p id="modalSideEffects"><strong>Side Effects:</strong></p>
+            <p id="modalNote"><strong>Note from Doctor:</strong></p>
+            <div id="modalVideoContainer">
+                <p><strong>Instruction Video:</strong></p>
+                <video id="modalVideo" width="320" height="240" controls></video>
+            </div>
+        </div>
+    </div>
+    <div id="chatModal" class="modal" style="display:none;">
+        <div class="chatmodal-content">
+            <div class="physicianslist">
+                {% for physician in physicians %}
+                    <div class="physician-item" data-id="{{ physician.id }}">
+                        <div class="physician-name {{ 'selected' if loop.first }}">{{ physician.first_name }} {{ physician.last_name }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="chat-area">
+                <div class="messages" id="chatMessages">
+                    <!-- dynamically populated chat messages will go here -->
+                </div>
+                <div class="message-input">
+                    <textarea id="messageText" placeholder="Type a message..."></textarea>
+                    <button id="sendMessage">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="calendarModal" class="modal" style="display:none;">
+        <div class="calendarmodal-content">
+            <div class="legend">
+                <div class="row"><span class="bluecircle"></span> Available</div>
+                <div class="row"><span class="redcircle"></span> Requested</div>
+                <div class="row"><span class="greencircle"></span> Appointment</div>
+            </div>
+            <div id="calendar"></div>
+        </div>
+    </div>
+    <button class="chatbutton" id="chatButton"><i class="fa-solid fa-comment"></i></button>
+    <button class="calendarbutton" id="calendarButton"><i class="fa-solid fa-calendar"></i></button>
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script>
+        // medication info
+        document.addEventListener('DOMContentLoaded', function() {
+            var medNames = document.querySelectorAll('.med-name');
+            medNames.forEach(function(medName) {
+                medName.addEventListener('click', function(event) {
+                    showModal(this.dataset);
+                });
+            });
+        });
+        function showModal(data) {
+            var modal = document.getElementById('modal');
+            document.getElementById('modalMedicationName').innerHTML = "<strong>Medication Name:</strong> " + data.medicationName;
+            document.getElementById('modalSideEffects').innerHTML = "<strong>Side Effects:</strong> " + data.sideEffects;
+            document.getElementById('modalNote').innerHTML = "<strong>Note from Doctor:</strong> " + data.note;
+            var video = document.getElementById('modalVideo');
+            if (data.videoUrl !== 'None') {
+                video.src = data.videoUrl;
+                video.style.display = 'block'
+            } else {
+                video.style.display = 'none';
+            }
+            modal.style.display = 'block';
+        }
+
+        function closeModalMed() {
+            var modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModalMed();
+            }
+        }
+        // pharmacy map
+        window.openMapPopup = function() {
+            var url = "/maps?id=" + encodeURIComponent('{{ patient_id }}');
+            var windowName = "pharmacyMapPopup";
+            var windowSize = "width=600,height=400";
+            window.open(url, windowName, windowSize);
+        }
+        // refill alerts
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationIcon = document.getElementById('notifications');
+            const notificationList = document.getElementById('notification_list');
+            const notificationDot = document.getElementById('unread_count');
+
+            notificationIcon.addEventListener('click', function(event) {
+                event.stopPropagation();
+                notificationList.style.display = notificationList.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                if (notificationList.style.display === 'block') {
+                    notificationList.style.display = 'none';
+                }
+            });
+        });
+        // chat
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chatButton');
+            const calendarButton = document.getElementById('calendarButton');
+            const patient_id = JSON.parse('{{ patient_id | tojson | safe }}');
+            var physician_id;
+            const sendMessageButton = document.getElementById('sendMessage');
+            // const appointments = JSON.parse('{{ appointments | tojson | safe }}');
+
+            function fetchAndDisplayChatHistory(physician_id) {
+                fetch(`/get_chat_history?physician_id=${physician_id}&patient_id=${patient_id}`)
+                .then(response => response.json())
+                    .then(data => {
+                        const chatMessages = document.getElementById('chatMessages');
+                        chatMessages.innerHTML = '';
+                        data.messages.forEach(msg => {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.textContent = msg.content;
+                            messageDiv.classList.add('message');
+                            if(msg.sent_by === 'patient') {
+                                messageDiv.classList.add('patient-message');
+                            } else {
+                                messageDiv.classList.add('physician-message');
+                            }
+                            chatMessages.appendChild(messageDiv);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching chat history:', error));
+            }
+            // JS when chat first loads
+            chatButton.addEventListener('click', function() {
+                const chatModal = document.getElementById('chatModal');
+                chatModal.style.display = 'block';
+                const physicians = JSON.parse('{{physicians | tojson | safe }}');
+                physician_id = physicians[0].id;
+                fetchAndDisplayChatHistory(physician_id);
+            });
+            // JS for selecting new physician
+            document.querySelectorAll('.physician-item').forEach(item => {
+                item.addEventListener('click', function(event) {
+                    physician_id = event.currentTarget.dataset.id;
+                    fetchAndDisplayChatHistory(physician_id);
+                    document.querySelectorAll('.physician-item .physician-name').forEach(physician => {
+                        physician.classList.remove('selected');
+                    });
+                    event.currentTarget.querySelector('.physician-name').classList.add('selected');
+                });
+            });
+            function sendMessage() {
+                const patient_id = JSON.parse('{{ patient_id | tojson | safe }}');
+                const message = messageText.value.trim();
+                if(message) {
+                    socket.emit('send_message', {
+                        'message_content': message,
+                        'patient_id': patient_id,
+                        'physician_id': physician_id,
+                        'sent_by': 'patient'
+                    });
+                    fetch(`/update_chat_history`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            physician_id: physician_id,
+                            patient_id: patient_id,
+                            message: message,
+                            sent_by: 'patient',
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.textContent = message;
+                            messageDiv.classList.add('message');
+                            messageDiv.classList.add('patient-message');
+                            document.getElementById('chatMessages').appendChild(messageDiv);
+
+                            // Clear the input field after sending
+                            messageText.value = '';
+                        } else {
+                            alert('Failed to update. Please try again.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
+            }
+            sendMessageButton.addEventListener('click', sendMessage);
+        });
+        calendarButton.addEventListener('click', function() {
+            const appointments = JSON.parse('{{ appointments | tojson | safe }}');
+            console.log(appointments)
+            const calendarModal = document.getElementById('calendarModal');
+            calendarModal.style.display = 'block';
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: appointments,
+                eventClick: function(info) {
+                    if (info.event.backgroundColor === 'blue') {
+                        const patient_id = JSON.parse('{{ patient_id | tojson | safe }}');
+                        const confirmed = confirm("Do you want to book this appointment?");
+                        if (confirmed) {
+                            // send AJAX request to book appointment
+                            fetch('/request_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    patient_id: patient_id,
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Appointment requested successfully!");
+                                } else {
+                                    alert("Could not request appointment: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    }
+                    else if (info.event.backgroundColor === 'red') {
+                        const confirmed = confirm("Do you want to cancel your request?");
+                        if (confirmed) {
+                            // send AJAX request to book appointment
+                            fetch('/cancel_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Request cancelled successfully!");
+                                } else {
+                                    alert("Could not cancel request: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    }
+                    else {
+                        const confirmed = confirm("Do you want to cancel this appointment?");
+                        if (confirmed) {
+                            // send AJAX request to book appointment
+                            fetch('/cancel_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Appointment cancelled successfully!");
+                                } else {
+                                    alert("Could not cancel appointment: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    }
+                }
+            });
+            calendar.render();
+        });
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var chatModal = document.getElementById('chatModal');
+            var calendarModal = document.getElementById('calendarModal');
+            if (event.target == chatModal || event.target == calendarModal) {
+                closeModal(event.target.id);
+            }
+        }
+    </script>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            // Handle the connection event
+        });
+
+        // Listening for messages from the server
+        socket.on('receive_message', function(data) {
+            // Append the new message to the chat area
+        });
+    </script>
+</body>
+</html>

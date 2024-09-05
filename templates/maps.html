@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pharmacies Google Maps</title>
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        ;((g) => {
+            var h,
+                a,
+                k,
+                p = 'The Google Maps JavaScript API',
+                c = 'google',
+                l = 'importLibrary',
+                q = '__ib__',
+                m = document,
+                b = window;
+            b = b[c] || (b[c] = {});
+            var d = b.maps || (b.maps = {}),
+                r = new Set(),
+                e = new URLSearchParams(),
+                u = () =>
+                    h ||
+                    (h = new Promise(async (f, n) => {
+                        await (a = m.createElement('script'));
+                        e.set('libraries', [...r] + '');
+                        for (k in g)
+                            e.set(
+                                k.replace(/[A-Z]/g, (t) => '_' + t[0].toLowerCase()),
+                                g[k]
+                            );
+                        e.set('callback', c + '.maps.' + q);
+                        a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                        d[q] = f;
+                        a.onerror = () => (h = n(Error(p + ' could not load.')));
+                        a.nonce = m.querySelector('script[nonce]')?.nonce || '';
+                        m.head.append(a);
+                    }));
+            d[l]
+                ? console.warn(p + ' only loads once. Ignoring:', g)
+                : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+        })({
+            // edit
+            key: 'AIzaSyBQKrXnlhkOX4En24z_shSDee7JpZWEo0U',
+            v: 'weekly',
+        });
+    </script>
+    <script>
+        async function initMap() {
+            const {Map} = await google.maps.importLibrary('maps');
+            const {AdvancedMarkerElement, PinElement} = await google.maps.importLibrary('marker');
+            const center_coordinates = JSON.parse('{{ coordinates | tojson | safe }}');
+            const patient_id = JSON.parse('{{ patient_id | tojson | safe }}')
+            const center = {lat: center_coordinates.latitude, lng: center_coordinates.longitude};
+            const map = new Map(document.getElementById('map'), {
+                center: center,
+                zoom: 14,
+                //  map id from: Map Management
+                // go to map styles to create a new map style and associate it with this map id
+                mapId: '32f409fbf351817b',
+            });
+            const all_coords = JSON.parse('{{ all_coords | tojson | safe }}');
+            const pinBackground = new PinElement({
+                background: "#1ac2ff",
+                borderColor: "#0096cc",
+                glyphColor: "#0096cc",
+            });
+            var backgroundMarker = new AdvancedMarkerElement({
+                map,
+                position: center,
+                content: pinBackground.element,
+            });
+            var backgroundInfoWindow = new google.maps.InfoWindow({
+                content: '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        "</div>" +
+                        '<h3 id="firstHeading" class="firstHeading">' + center_coordinates.pharmacy_name + '</h1>' +
+                        '<div id="bodyContent">' +
+                        "<p><b>Address: </b>" + center_coordinates.building_num + ' ' + center_coordinates.street_name + ' ' + center_coordinates.city + ' ' + center_coordinates.state + ' ' + center_coordinates.zip_code + 
+                        "<p><b>Phone Number: </b>" + center_coordinates.phone_number + 
+                        "</div>" +
+                        "</div>"
+            });
+            backgroundMarker.addListener("click", () => {
+                backgroundInfoWindow.open({
+                anchor: backgroundMarker,
+                map,
+                });
+            });
+            Object.values(all_coords).forEach(coord => {
+                var lat = parseFloat(coord.latitude);
+                var lng = parseFloat(coord.longitude);
+                if (lat !== center_coordinates.latitude || lng !== center_coordinates.longitude) {
+                    var marker = new AdvancedMarkerElement({
+                        map,
+                        position: {lat: lat, lng: lng},
+                    });
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                "</div>" +
+                                '<h3 id="firstHeading" class="firstHeading">' + coord.pharmacy_name + '</h1>' +
+                                '<div id="bodyContent">' +
+                                "<p><b>Address: </b>" + coord.building_num + ' ' + coord.street_name + ' ' + coord.city + ' ' + coord.state + ' ' + coord.zip_code + 
+                                "<p><b>Phone Number: </b>" + coord.phone_number + 
+                                "</div>" +
+                                "</div>" +
+                                '<a href="/change-pharmacy?patient_id='+patient_id+'&pharmacy_id='+coord.id+'" onclick="event.preventDefault(); changePharmacy(this.href);">Click here to make this your primary pharmacy!</a>',
+                    });
+                    marker.addListener("click", () => {
+                        infoWindow.open({
+                        anchor: marker,
+                        map,
+                        });
+                    });
+                }
+            });
+        }
+
+        function changePharmacy(url) {
+            fetch(url, {
+                method: 'POST'
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Your primary pharmacy has been updated.');
+                    location.reload();
+                } else {
+                    alert('Error updating primary pharmacy. Please try again.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+
+        // initialize map
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+
+    <title>MediConnect</title>
+</head>
+<body id="pharmacyPatientDetails.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+        <ul class="actions">
+            <li id="autoRefill"><a href="/pharmacistAutoRefill">Auto-Refill</a></li>
+            <li id="searchIcon"><a href="/"><i class="fa-solid fa-magnifying-glass" href="/"></i></a></li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{ patient_info[0].first_name }} {{ patient_info[0].last_name }}</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/patientInfo_nonpatient?id={{ patient_id }}">Personal Information</a></li> 
+            <li><a href="/logout">Logout</a></li>         
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content-title">
+        <h1 class="tableHeader">Your Current Medications</h1>
+        <div class="pharmacy">
+            Pharmacy Pick-up: 
+            {% if patient_pharmacy %}
+                <a href="javascript:void(0);" onclick="openMapPopup(); return false;" id="pharm_map">
+                    <strong>{{ patient_pharmacy[0].pharmacy_name }}, {{ patient_pharmacy[0].building_num }} {{ patient_pharmacy[0].street_name }}</strong> <i class="fa-solid fa-map-marked-alt fa-lg"></i>
+                </a>
+                <!-- <p class="pharmacy">Pharmacy Pick-up: <a href="javascript:void(0);" onclick="openMapPopup(); return false;" id="pharm_map">{{ patient_pharmacy[0].pharmacy_name }}, {{ patient_pharmacy[0].building_num }} {{ patient_pharmacy[0].street_name }}</a></p> -->
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+        <table class="medicationHistory">
+            <tr>
+                <th>Medication Name</th>
+                <th>Dose</th>
+                <th>Frequency</th>
+                <th>Days Supply</th>
+                <th>Prescription valid until</th>
+                <th>Prescribed By</th>
+            </tr>
+            {% if patient_meds[0] %}
+                {% for med in patient_meds[0] %}
+                    <tr>
+                        <td class="med-name" data-dropdown-id="dropdown{{ med.id }}"> {{ med.medication_name }} </td>
+                        <td> {{ med.dosage }} </td>
+                        <td> {{ med.frequency }} </td>
+                        <td> {{ med.days_supply }} </td>
+                        <td> {{ med.prescription_valid_till }} </td>
+                        <td> {{ med.first_name }} {{ med.last_name }} </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+    {% if patient_meds[1] %}
+        <div class="content-title">
+            <h1 class="tableHeader">{{ patient_info[0].first_name }}'s Past Medications</h1>
+        </div>
+        <div class="content">
+            <table class="medicationHistory">
+                <tr>
+                    <th>Medication Name</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Days Supply</th>
+                    <th>Prescription valid until</th>
+                    <th>Prescribed By</th>
+                </tr>
+                {% for med in patient_meds[1] %}
+                    <tr>
+                        <td class="med-name" data-dropdown-id="dropdown{{ med.id }}"> {{ med.medication_name }} </td>
+                        <td> {{ med.dosage }} </td>
+                        <td> {{ med.frequency }} </td>
+                        <td> {{ med.days_supply }} </td>
+                        <td> {{ med.prescription_valid_till }} </td>
+                        <td> {{ med.first_name }} {{ med.last_name }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script>
+        window.openMapPopup = function() {
+            var url = "/maps_nonpatient?id=" + encodeURIComponent('{{ patient_id }}');
+            var windowName = "pharmacyMapPopup";
+            var windowSize = "width=600,height=400";
+            window.open(url, windowName, windowSize);
+        }
+    </script>
+</body>
+</html>

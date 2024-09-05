@@ -1,0 +1,79 @@
+:root {
+    --theme-color: #ababab;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    display: flex;
+    justify-content: center;
+    padding-top: 88px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+    z-index: 3;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+.actions li {
+    padding: 8px 12px;
+}
+
+.actions #login {
+    background-color: white;
+}
+
+.actions #login a {
+    color: var(--theme-color);
+    font-weight: bold;
+}
+
+#registerForm {
+    width: 200px;
+}
+
+
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: 140px;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

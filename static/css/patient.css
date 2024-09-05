@@ -1,0 +1,443 @@
+:root {
+    --theme-color: #34495e;
+    --background-color: #E0F2FE;
+    /* --background-color: white;     */
+    --table-header-bg: #c8d6e5;
+    --table-border-color: #dee2e6;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    padding-top: 88px;
+    background-color: var(--background-color);
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+}
+
+.content-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 10%;
+    margin-top: 1%;
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    color: white;
+    padding-left: 0;
+}
+
+.actions li {
+    font-size: 200%;
+    padding: 8px 20px;
+}
+
+#userIcon {
+    cursor: pointer;
+}
+
+.hiddenbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+}
+
+.hiddenlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.hiddenlist li {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #34495e;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.hiddenlist li:hover {
+    background-color: #f5f5f5;
+    color: #2c3e50;
+}
+
+.hiddenlist a {
+    color: #34495e;
+    text-decoration: none;
+    display: block;
+}
+
+.hiddenlist li:last-child {
+    border-bottom: none;
+}
+
+.tableHeader {
+    font-size: 150%;
+    padding-left: 10%;
+    color: #212121;
+}
+
+.pharmacy {
+    padding-top: 2%;
+    padding-right: 5%;
+}
+
+.pharmacyLink {
+    color: #212121;
+}
+
+#pharm_map {
+    color: #212121;
+    cursor: painter;
+}
+
+.fa-map-marked-alt {
+    margin-left: 2px;
+}
+
+.medicationHistory {
+    margin: 20px auto;
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+    text-align: center;
+    width: 80%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.medicationHistory th {
+    background-color: var(--table-header-bg);
+    color: var(--theme-color);
+    padding: 12px;
+    border: 1px solid var(--table-border-color);
+}
+
+.medicationHistory td {
+    border: 1px solid var(--table-border-color);
+    padding: 8px 12px;
+}
+
+.med-name {
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#notifications {
+    position: relative;
+    cursor: pointer;
+}
+
+.alert-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 12px 12px;
+    border-radius: 8px;
+    z-index: 100;
+}
+
+.alert-menu p {
+    padding: 12px 16px;
+    color: black;
+    font-size: 15px;
+}
+
+.unread {
+    font-weight: bold;
+}
+
+.chatmodal-content, .calendarmodal-content {
+    display: flex;
+    flex-direction: row;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    border-radius: 10px;
+}
+
+.chatmodal-content {
+    width: 40%;
+}
+
+.calendarmodal-content {
+    width: 70%;
+}
+
+.physicianslist{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    border-right: 2px solid #ccc;
+    padding-right: 20px;
+}
+
+.physician-name {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 20px;
+}
+
+.physician-name.selected {
+    background-color: #d0e6f6;
+}
+
+.chat-area .messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-area {
+    width: 100%;
+}
+
+
+.messages {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word; /* To prevent overflow */
+}
+
+.message-input {
+    display: flex;
+    margin-top: 10px;
+}
+
+.messages div {
+    max-width: 60%;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background-color: #d0e6f6;
+    align-self: flex-start;
+}
+
+.messages .patient-message {
+    background-color: #a4c9f5;
+    align-self: flex-end;
+}
+
+.physician-message {
+    background-color: #e0e0e0;
+    color: black;
+    align-self: flex-start;
+}
+
+#messageText {
+    flex-grow: 1;
+    margin-right: 10px;
+    border-radius: 20px;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+}
+
+#sendMessage {
+    background-color: var(--theme-color);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.chatbutton, .calendarbutton {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--theme-color);
+    color: white;
+    font-size: 20px;
+    border: none;
+    bottom: 6%;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.chatbutton {
+    right: 9%;
+}
+
+.calendarbutton {
+    right: 15%;
+}
+
+#calendar {
+    width: 100%;
+    height: 550px;
+}
+
+#calendar * {
+    color: black;
+}
+
+.fc-daygrid-event {
+    display: block;
+    background-color: #E0E0E0;
+    border: 1px solid #CCCCCC;
+}
+
+.fc-daygrid-event .fc-event-main {
+    height: 100%;
+}
+
+.legend {
+    position: fixed;
+    border: 1px solid var(--table-border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    top: 10px;
+    right: 15px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+.row:last-child {
+    margin-bottom: 0;
+}
+
+.redcircle, .bluecircle, .greencircle {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.redcircle {
+    background-color: red;
+}
+
+.bluecircle {
+    background-color: blue;
+}
+
+.greencircle {
+    background-color: green;
+}
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: initial;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

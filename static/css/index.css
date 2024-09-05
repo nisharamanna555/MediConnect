@@ -1,0 +1,153 @@
+:root {
+    --theme-color: #34495e;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    padding-top: 65px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+    z-index: 3;
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+.actions li {
+    padding: 8px 12px;
+}
+
+.actions #login {
+    background-color: white;
+}
+
+.actions #login a {
+    color: var(--theme-color);
+    font-weight: bold;
+}
+
+.banner {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(/static/images/banner.jpg);
+    background-size: cover;
+    background-position: center center;
+    position: fixed;
+    text-align: center;
+}
+
+.banner h2 {
+    padding-top: 8%;
+    font-size: 80px;
+    color: white;
+}
+
+.banner h3 {
+    padding-top: 0%;
+    font-size: 30px;
+    color: white;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.learn-more {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--theme-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.learn-more:hover {
+    background-color: white;
+    color: var(--theme-color);
+}
+
+.introduction {
+    width: 100%;
+    /* height: 400px; */
+    height: 100vh;
+    position: relative;
+    background: white;
+    top: 100vh;
+    text-align: center;
+}
+
+.introduction h2 {
+    font-size: 40px;
+    margin: 0;
+    padding-top: 120px;
+    letter-spacing: 4px;
+}
+
+.introduction p {
+    margin-left: 300px;
+    margin-right: 300px;
+    padding: 2% 0;
+    line-height: 30px;
+    text-align: justify;
+}
+
+footer {
+    background-color: var(--theme-color);
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    height:30px;
+    padding-bottom: 78px;
+}
+
+#footer {
+    margin-left: 200px;
+    color: white;
+}
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: initial;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

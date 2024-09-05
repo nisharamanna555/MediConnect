@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editPatientInfo.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    
+    <title>MediConnect</title>
+</head>
+<body id="editPatientInfo.html">
+    <!-- Header -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            MediConnect
+        </div>
+        <ul class="actions">
+            <li id="notifications">
+                <i class="fa-solid fa-bell"></i>
+                <div class="alert-menu" id="notification_list" style="display:none;">
+                    {% for alert in alerts %}
+                        <p class="{{ alert.is_read }}"> Your prescription for {{ alert.med_name }} has been refilled at {{ alert.pharmacy_name }}, {{ alert.building_num }} {{ alert.street_name }} {{ alert.city }} {{ alert.state }} {{ alert.zip_code }} </p>
+                    {% endfor %}
+                </div>
+            </li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            {% if current_user.id / 200000 >= 1 and current_user.id / 200000 < 1.5 %}
+            <li id="name">{{current_user.pharmacy_name}}</li>
+            {% else %}
+            <li id="name">{{current_user.first_name}} {{current_user.last_name}}</li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/patient_info?id={{ patient_id }}">Personal Information</a></li>
+            <li><a href="/logout">Logout</a></li>        
+        </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <div class="form-container">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+
+                <div class="input-wrapper">
+                    <div class="input-section">
+                        <h2>Personal Information</h2>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <label for="first_name">First Name:</label>
+                                {{ form.first_name(class="form-control") }}
+                            </div>
+
+                            <div class="col">
+                                <label for="last_name">Last Name:</label>
+                                {{ form.last_name(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label for="d_o_b">Date of Birth:</label>
+                                {{ form.d_o_b(class="form-control") }}
+                            </div>
+
+                            <div class="col">
+                                <label for="sex">Sex:</label>
+                                {{ form.sex(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-section">
+                        <h2>Contact Information</h2>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <label for="phone_number">Phone Number:</label>
+                                {{ form.phone_number(class="form-control") }}
+                            </div>
+
+                            <div class="col">
+                                <label for="emergency_cont">Emergency Contact:</label>
+                                {{ form.emergency_cont(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="address">
+                            <label for="address">Address:</label>
+                            
+                            <div class="row">
+                                <div class="col">
+                                    {{ form.building_num(class="form-control") }}
+                                </div>
+                                <div class="col">
+                                    {{ form.street_name(class="form-control") }}
+                                </div>
+                                <div class="col">
+                                    {{ form.apt_num(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    {{ form.city(class="form-control") }}
+                                </div>
+                                <div class="col">
+                                    {{ form.state(class="form-control") }}
+                                </div>
+                                <div class="col">
+                                    {{ form.zip_code(class="form-control") }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form.submit(class="btn-primary") }}
+            </form>
+
+            <form method="POST" action="">
+                {{ back_form.back(class='btn-primary') }}
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationIcon = document.getElementById('notifications');
+            const notificationList = document.getElementById('notification_list');
+            const notificationDot = document.getElementById('unread_count');
+
+            notificationIcon.addEventListener('click', function(event) {
+                event.stopPropagation();
+                notificationList.style.display = notificationList.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', function() {
+                if (notificationList.style.display === 'block') {
+                    notificationList.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

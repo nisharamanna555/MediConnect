@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patientInfo.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    
+    <title>MediConnect</title>
+</head>
+<body id="patientInfo.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+        <ul class="actions">
+            <li id="searchIcon"><a href="/"><i class="fa-solid fa-magnifying-glass" href="/"></i></a></li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{ patient_info[0].first_name }} {{ patient_info[0].last_name }}</li>
+        </ul>
+    </nav>
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/{{ usertype }}PatientDetails?patient_id={{ patient_id }}">Medication List</a></li>
+            <li><a href="/logout">Logout</a></li>        
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content">
+        <div class="patient-details-container">
+            <div class="personal-details">
+                <h2>Personal Details</h2>
+                <p><strong>First name:</strong> {{ patient_info[0].first_name }}</p>
+                <p><strong>Last name:</strong> {{ patient_info[0].last_name }}</p>
+                <p><strong>Date of birth:</strong> {{ patient_info[0].d_o_b }}</p>
+                <p><strong>Sex:</strong> {{ patient_info[0].sex }}</p>
+            </div>
+            <div class="contact-information">
+                <h2>Contact Information</h2>
+                <p><i class="fa-solid fa-phone"></i> {{ patient_info[0].phone_number }}</p>
+                <p><i class="fa-solid fa-user-injured"></i> Emergency contact: {{ patient_info[0].emergency_cont }}</p>
+                <p><i class="fa-solid fa-house"></i> Address: {{ patient_info[0].building_num }} {{ patient_info[0].street_name }} {{ patient_info[0].city }} {{ patient_info[0].state }} {{ patient_info[0].zip_code }}</p>
+            </div>
+            <div class="insurance-upload">
+                {% if file_url %}
+                <div class="mt-5">
+                    <img src="{{ file_url }}" style="width: 300px;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="medical-background">
+            <div class="allergies">
+                <h2>Allergies</h3>
+                {% if patient_allergies %}
+                    {% for allergy in patient_allergies %}
+                        <br>
+                        {{ allergy.allergy_name }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="primary-diseases">
+                <h2>Primary Diseases</h3>
+                {% if patient_diseases %}
+                    {% for disease in patient_diseases %}
+                        <br>
+                        {{disease.disease_name}}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+</body>
+</html>

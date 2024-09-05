@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacistAutoRefill.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <title>MediConnect</title>
+</head>
+<body id="pharmacistAutoRefill.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            MediConnect
+        </div>
+        <ul class="actions">
+            <!-- <li id="autoRefill"><a href="/pharmacistAutoRefill">Auto-Refill</a></li> -->
+            <li id="autoRefill"><a href="/"><i class="fa-solid fa-magnifying-glass fa-xl"></i></a></li>
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{current_user.username}}</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content">
+        {% if message is defined and message %}
+            <div class="alert alert-warning"><strong> {{ message }} </strong></div>
+        {% endif %}
+        <div class="AutoRefill">
+            <table>
+                <h1 class="tableHeader">Auto-Refill List</h1>
+                <tr>
+                    <th>Done</th>
+                    <th>Patient name</th>
+                    <th>Medication name</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Days supply</th>
+                    <th>Prescription valid until</th>
+                    <th>Next refill date</th>
+                </tr>
+                {% for refill in refills %}
+                    <tr>
+                        <td><input type="checkbox" class="refill-checkbox" value="{{ refill.patient_id }} {{ refill.medication_id }} {{ refill.pharmacy_id }}" onchange="updateRefillStatus(this)"></td>
+                        <td> {{refill.patient_name}} </td>
+                        <td> {{refill.medication_name}} </td>
+                        <td> {{refill.dosage}} </td>
+                        <td> {{refill.frequency}} </td>
+                        <td> {{refill.days_supply}} </td>
+                        <td> {{refill.prescription_valid_till}} </td>
+                        <td> {{refill.next_refill_date}} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // all checkboxes are unchecked on page load
+            const checkboxes = document.querySelectorAll('.refill-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+
+        function updateRefillStatus(checkbox) {
+            if (checkbox.checked) {
+                const pat_med_pharId = checkbox.value;
+                fetch('/update_refill_status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        pat_med_pharId: pat_med_pharId,
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Update successful!');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to update. Please try again.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+
+        }
+    </script>
+</body>
+</html>

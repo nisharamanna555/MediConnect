@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    
+    <title>MediConnect</title>
+</head>
+<body id="index.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+        <ul class="actions">
+            <li id="login"><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+    
+    <!--content-->
+    <div class="content" id="content">
+        <div class="banner">
+            <h2>Welcome to MediConnect</h2>
+            <h3>Your Health, Streamlined</h3>
+            <a class="learn-more" href="#introduction">Learn More</a>
+        </div>
+        <div class="introduction">
+            <h2>What is MediConnect?</h2>
+            <p>
+                MediConnect is a project to improve communication between patients, physicians, and pharmacists.
+                Users can easily share their medical records with each other.
+                Medical professionals can access to patients' records written from other hospoitals.
+                With MediConnect doctors can reduce risks of misdiagnosis and patients can have quicker but safter prescriptions. 
+                Make a MediConnect account and try easy-to-go features for your prescriptions!
+            </p>
+            <footer>
+                <p id="footer">Contact: (347) 401-2552 / tk2496@nyu.edu</p>
+            </footer>  
+        </div>
+    </div>
+
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          var learnMoreBtn = document.querySelector('.learn-more');
+          learnMoreBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('.introduction').scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+      </script>      
+</body>
+</html>

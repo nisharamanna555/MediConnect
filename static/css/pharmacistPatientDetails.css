@@ -1,0 +1,158 @@
+:root {
+    --theme-color: #ababab;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    padding-top: 88px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    color: white;
+    padding-left: 0;
+    align-items: center;
+}
+
+.actions li {
+    font-size: 200%;
+    padding: 8px 20px;
+}
+
+.actions #autoRefill {
+    font-size: 120%;
+}
+
+#userIcon {
+    cursor: pointer;
+}
+
+.hiddenbar {
+    background-color: #dddddd;
+    width: 200px;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    z-index: 1;
+    display: none;
+}
+
+.hiddenlist {
+    list-style: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 0;
+}
+
+.hiddenlist li {
+    padding-top: 15px;
+    font-size: 120%;
+    height: 30px;
+}
+
+.hiddenlist a {
+    color: black;
+}
+
+.pharmacy {
+    padding-top: 2%;
+    padding-right: 5%;
+}
+
+.pharmacyLink {
+    color: #212121;
+}
+
+#pharm_map {
+    color: #212121;
+    cursor: painter;
+}
+
+.content {
+    width: 100vw;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.patientDetails {
+    margin-top: 20px;
+    width: 80%;
+}
+
+.tableHeader {
+    font-size: 150%;
+    padding-left: 0%;
+}
+
+.patientDetails table {
+    border: solid;
+    border-collapse: collapse;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+}
+
+.patientDetails table a {
+    color: black;
+}
+
+.patientDetails a {
+    text-decoration: underline;
+}
+
+#patientName {
+    color: blue;
+}
+
+.patientDetails table th {
+    border: solid;
+}
+
+.patientDetails table td {
+    border: solid;
+}
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: initial;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

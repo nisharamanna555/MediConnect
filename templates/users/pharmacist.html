@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacist.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <title>MediConnect</title>
+</head>
+<body id="pharmacist.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            MediConnect
+        </div>
+        <ul class="actions">
+            <li id="autoRefill"><a href="/pharmacistAutoRefill">Auto-Refill</a></li>
+            <!-- <li><i class="fa-solid fa-bell"></i></li> -->
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{ current_user.username }}</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/logout">Logout</a></li>            
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content">
+        <h1 class="welcomeMsg">Welcome, {{ current_user.username }}</h1>
+        <div class="searchBar">
+            <form class="searchForm">
+                <i class="fas fa-search"></i>
+                <input type="text" name="searchText" id="searchText" placeholder="Search Patient Here">
+                <button type="submit" id="searchButton">Search</button>
+            </form>
+        </div>
+        <div class="searchResult">
+            <table id="resultTable" class="resultTable"></table>
+        </div>
+        <div id="pageNum"></div>
+    </div>
+    
+    <!--js file-->
+    <script>var page = {{page}};</script>
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='script/pharmacist.js') }}"></script>
+</body>
+</html>

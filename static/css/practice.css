@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+}
+
+.opener {
+    display: block;
+    width: 200px;
+    height: 50px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    background-color: #ababab;
+    border-radius: 50px;
+}
+
+.popup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); 
+    width: 500px;
+    height: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    text-align: right;
+    padding: 20px;
+    box-sizing: border-box;
+    background: white;
+    opacity: 0;
+    transition: all 0.5s;
+    z-index: 5;
+    display: grid;
+}
+
+.popup a {
+    color: grey;
+    text-decoration: none;
+    height: 10%;
+    padding-bottom: 0;
+}
+
+.popup:target {
+    opacity: 1;
+}
+
+.popup:target + .dim {
+    opacity: 1;
+    z-index: 2;
+} 
+
+.dim {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.5s;
+}

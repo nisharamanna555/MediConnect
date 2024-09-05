@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/physician.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ab3cdff4cc.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js"></script>
+
+    <title>MediConnect</title>
+</head>
+<body id="physician.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            MediConnect
+        </div>
+        <ul class="actions">
+            <li id="userIcon"><i class="fa-solid fa-user"></i></li>
+            <li id="name">{{ current_user.username }}</li>
+        </ul>
+    </nav>
+
+    <div class="hiddenbar" id="hiddenBar">
+        <ul class="hiddenlist">
+            <li><a href="/logout">Logout</a></li>            
+        </ul>
+    </div>
+    <!--content-->
+    <div class="content">
+        <h1 class="welcomeMsg">Welcome, {{ current_user.first_name }} {{ current_user.last_name }} </h1>
+        <div class="searchBar">
+            <form class="searchForm">
+                <i class="fas fa-search"></i>
+                <input type="text" name="searchText" id="searchText" placeholder="Search Patient Here">
+                <button type="submit" id="searchButton">Search</button>
+            </form>
+        </div>
+        <div class="searchResult">
+            <table id="resultTable" class="resultTable"></table>
+        </div>
+        <div id="pageNum"></div><br><br>
+    </div>
+
+    <div id="chatModal" class="modal" style="display:none;">
+        <div class="chatmodal-content">
+            <div class="physicianslist">
+                {% for patient in patients %}
+                    <div class="physician-item" data-id="{{ patient.id }}">
+                        <div class="physician-name {{ 'selected' if loop.first }}">{{ patient.first_name }} {{ patient.last_name }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="chat-area">
+                <div class="messages" id="chatMessages">
+                    <!-- dynamically populated chat messages will go here -->
+                </div>
+                <div class="message-input">
+                    <textarea id="messageText" placeholder="Type a message..."></textarea>
+                    <button id="sendMessage">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="calendarModal" class="modal" style="display:none;">
+        <div class="calendarmodal-content">
+            <div class="legend">
+                <div class="row"><span class="bluecircle"></span> Available</div>
+                <div class="row"><span class="redcircle"></span> Requested</div>
+                <div class="row"><span class="greencircle"></span> Appointment</div>
+            </div>
+            <div id="calendar"></div>
+        </div>
+    </div>
+    <div id="handleRequestModal" class="modal" style="display:none;">
+        <div class="handlemodal-content">
+            <h2>How would you like to handle this request?</h2>
+            <div class="buttons-container">
+                <button id="rejectButton" class="request-action-button reject-button">Reject</button>
+                <button id="approveButton" class="request-action-button approve-button">Approve</button>
+            </div>
+        </div>
+    </div>    
+    <button class="chatbutton" id="chatButton"><i class="fa-solid fa-comment"></i></button>
+    <button class="calendarbutton" id="calendarButton"><i class="fa-solid fa-calendar"></i></button>
+    <!--js file-->
+    <script>var page = {{page}};</script>
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='script/physician.js') }}"></script>
+    <script>
+        // chat
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatButton = document.getElementById('chatButton');
+            const calendarButton = document.getElementById('calendarButton');
+            const physician_id = JSON.parse('{{ physician_id | tojson | safe }}');
+            // var physician_id;
+            const sendMessageButton = document.getElementById('sendMessage');
+            function fetchAndDisplayChatHistory(patient_id) {
+                fetch(`/get_chat_history?physician_id=${physician_id}&patient_id=${patient_id}`)
+                .then(response => response.json())
+                    .then(data => {
+                        const chatMessages = document.getElementById('chatMessages');
+                        chatMessages.innerHTML = '';
+                        data.messages.forEach(msg => {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.textContent = msg.content;
+                            messageDiv.classList.add('message');
+                            if(msg.sent_by === 'patient') {
+                                messageDiv.classList.add('patient-message');
+                            } else {
+                                messageDiv.classList.add('physician-message');
+                            }
+                            chatMessages.appendChild(messageDiv);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching chat history:', error));
+            }
+            // JS when chat first loads
+            chatButton.addEventListener('click', function() {
+                const chatModal = document.getElementById('chatModal');
+                chatModal.style.display = 'block';
+                const patients = JSON.parse('{{patients | tojson | safe }}');
+                patient_id = patients[0].id;
+                fetchAndDisplayChatHistory(patient_id);
+            });
+            // JS for selecting new physician
+            document.querySelectorAll('.physician-item').forEach(item => {
+                item.addEventListener('click', function(event) {
+                    patient_id = event.currentTarget.dataset.id;
+                    fetchAndDisplayChatHistory(patient_id);
+                    document.querySelectorAll('.physician-item .physician-name').forEach(physician => {
+                        physician.classList.remove('selected');
+                    });
+                    event.currentTarget.querySelector('.physician-name').classList.add('selected');
+                });
+            });
+            function sendMessage() {
+                const message = messageText.value.trim();
+                if(message) {
+                    socket.emit('send_message', {
+                        'message_content': message,
+                        'patient_id': patient_id,
+                        'physician_id': physician_id,
+                        'sent_by': 'physician'
+                    });
+                    fetch(`/update_chat_history`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            physician_id: physician_id,
+                            patient_id: patient_id,
+                            message: message,
+                            sent_by: 'physician',
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.textContent = message;
+                            messageDiv.classList.add('message');
+                            messageDiv.classList.add('physician-message');
+                            document.getElementById('chatMessages').appendChild(messageDiv);
+
+                            // Clear the input field after sending
+                            messageText.value = '';
+                        } else {
+                            alert('Failed to update. Please try again.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
+            }
+            sendMessageButton.addEventListener('click', sendMessage);
+        });
+        // calendar
+        calendarButton.addEventListener('click', function() {
+            const appointments = JSON.parse('{{ appointments | tojson | safe }}');
+            const calendarModal = document.getElementById('calendarModal');
+            calendarModal.style.display = 'block';
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: appointments,
+                eventClick: function(info) {
+                    if (info.event.backgroundColor === 'blue') {
+                        const confirmed = confirm("Do you want to remove this availability?");
+                        if (confirmed) {
+                            // send AJAX request to book appointment
+                            fetch('/delete_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Availability removed successfully!");
+                                } else {
+                                    alert("Could not remove availability: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    }
+                    else if (info.event.backgroundColor === 'red') {
+                        // Show modal for handling request
+                        const handleRequestModal = document.getElementById('handleRequestModal');
+                        handleRequestModal.style.display = 'block';
+
+                        // Bind event handlers to the buttons
+                        const rejectButton = document.getElementById('rejectButton');
+                        const approveButton = document.getElementById('approveButton');
+
+                        rejectButton.onclick = function() {
+                            fetch('/cancel_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Request rejected successfully!");
+                                } else {
+                                    alert("Could not reject request: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                            handleRequestModal.style.display = 'none';
+                        };
+                        approveButton.onclick = function() {
+                            fetch('/approve_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Appointment approved successfully!");
+                                } else {
+                                    alert("Could not approve appointment: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                            handleRequestModal.style.display = 'none';
+                        }
+                    }
+                    else {
+                        const confirmed = confirm("Do you want to cancel this appointment?");
+                        if (confirmed) {
+                            // send AJAX request to book appointment
+                            fetch('/cancel_appointment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: info.event.id
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Appointment cancelled successfully!");
+                                } else {
+                                    alert("Could not cancel appointment: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    }
+                }
+            });
+            calendar.render();
+        });
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var chatModal = document.getElementById('chatModal');
+            var calendarModal = document.getElementById('calendarModal');
+            if (event.target == chatModal || event.target == calendarModal) {
+                closeModal(event.target.id);
+            }
+        }
+    </script>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            // Handle the connection event
+        });
+
+        // Listening for messages from the server
+        socket.on('receive_message', function(data) {
+            // Append the new message to the chat area
+        });
+    </script>
+</body>
+</html>

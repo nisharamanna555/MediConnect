@@ -1,0 +1,275 @@
+:root {
+    --theme-color: #34495e;
+    --background-color: #E0F2FE;
+    --table-header-bg: #c8d6e5;
+    --table-border-color: #dee2e6;
+}
+
+body {
+    margin: 0;
+    font-family: "Lato";
+    padding-top: 88px;
+    background-color: var(--background-color);
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--theme-color);
+    padding: 8px 50px;
+    height: 70px;
+}
+
+.logo {
+    font-size: 30px;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    list-style: none;
+    color: white;
+    padding-left: 0;
+}
+
+.actions li {
+    font-size: 200%;
+    padding: 8px 20px;
+}
+
+#searchIcon,
+#userIcon {
+    cursor: pointer;
+}
+
+.hiddenbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+}
+
+.hiddenlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.hiddenlist li {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #34495e;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.hiddenlist li:hover {
+    background-color: #f5f5f5;
+    color: #2c3e50;
+}
+
+.hiddenlist a {
+    color: #34495e;
+    text-decoration: none;
+    display: block;
+}
+
+.hiddenlist li:last-child {
+    border-bottom: none;
+}
+
+.content {
+    width: 100vw;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.tableHeader {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%; /* Ensuring it spans the full width available */
+    font-size: 100%;
+    color: #212121;
+    padding-left: 20%;
+}
+
+.patientDetails {
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+.patientDetails table {
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.patientDetails th {
+    background-color: var(--table-header-bg);
+    color: var(--theme-color);
+    padding: 12px;
+    border: 1px solid var(--table-border-color);
+}
+
+.patientDetails td {
+    border: 1px solid var(--table-border-color);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+#popup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: #fefefe;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+}
+
+#popup #popupControl {
+    height: 32px;
+    text-align: right;
+    align-items: center;
+}
+
+#popup a {
+    color: var(--theme-color);
+}
+
+#popup .caution,
+#popup .notes,
+#popup .note {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#popup .note {
+    border: 1px solid var(--theme-color);
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+.popupButton {
+    background-color: #34495e;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#popup .input {
+    /* height: 10px; Default height */
+    max-height: 130px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    /* resize: vertical; */
+}
+
+#popup .note:not(:first-child) {
+    border-top: none;
+}
+
+#addMedication {
+    background-color: var(--theme-color);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#medicationInputs {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+#medicationInputs form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#medicationInputs input,
+#medicationInputs select {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid var(--table-border-color);
+    border-radius: 4px;
+}
+
+#medicationInputs input[type="submit"],
+#medicationInputs button {
+    background-color: var(--theme-color);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    margin: 10px;
+}
+
+#medicationInputs input[type="submit"]:hover,
+#medicationInputs button:hover {
+    background-color: #2c3e50;
+}
+
+@media screen and (max-width: 780px) {
+    body {
+        padding-top: 141px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+        height: initial;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

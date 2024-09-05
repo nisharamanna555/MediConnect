@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--sources for styling-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>MediConnect</title>
+</head>
+<body class="login-page" id="login.html">
+    <!--header-->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="MediConnect logo"></i>
+            <a href="/">MediConnect</a>
+        </div>
+    </nav>
+    
+    <!--content-->
+    <div class="container">
+        <form id="loginForm" action="{{ url_for('main.login') }}" method="POST">
+            {{ form.hidden_tag() }}
+
+            <h1>Login</h1>
+            
+            {% with messages=get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{category}}">
+                        <strong>
+                            {{message}}
+                        </strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="form-group">
+                <div class="input-icon">
+                    <i class="fa fa-user icon"></i>
+                    {{ form.user.label(class='form-control-label') }}
+                    {{ form.user(class='form-control') }}
+                </div>
+                <div class="input-icon">
+                    <i class="fa fa-envelope icon"></i>
+                    {{ form.username(class="form-control form-control-lg", id="username") }}
+                </div>
+                <div class="input-icon">
+                    <i class="fa fa-lock icon"></i>
+                    {{ form.password(class="form-control form-control-lg", id="password") }}
+                </div>
+                <div class="form-footer">
+                    {{ form.submit(class="btn btn-primary") }}
+                    <a href="{{ url_for('main.forgot') }}" class="forgot-password">Forgot Password?</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--js file-->
+    <script type="module" src="{{ url_for('static', filename='script/main.js') }}"></script>
+</body>
+</html>
