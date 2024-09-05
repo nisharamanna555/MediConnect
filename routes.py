@@ -136,22 +136,23 @@ def forgot_token(token):
 
 # FUNCTIONS
 
-def upload_to_bucket(data, file_path, bucket_name):
-    storage_client = storage.Client()
-    try:
-        bucket = storage_client.get_bucket(bucket_name)
+# GCP
+# def upload_to_bucket(data, file_path, bucket_name):
+#     storage_client = storage.Client()
+#     try:
+#         bucket = storage_client.get_bucket(bucket_name)
 
-        # bucket.iam_configuration.uniform_bucket_level_access_enabled = False
-        # bucket.patch()
+#         # bucket.iam_configuration.uniform_bucket_level_access_enabled = False
+#         # bucket.patch()
 
-        blob = bucket.blob(data)
-        # blob.encryption_key(os.getenv('ENCRYPTION_KEY').encode())
-        blob.upload_from_filename(file_path)
-        blob.make_public()
+#         blob = bucket.blob(data)
+#         # blob.encryption_key(os.getenv('ENCRYPTION_KEY').encode())
+#         blob.upload_from_filename(file_path)
+#         blob.make_public()
 
-        return blob.public_url
-    except Exception as err:
-        print(f'Error: {err}')
+#         return blob.public_url
+#     except Exception as err:
+#         print(f'Error: {err}')
 
 # for insurance card upload
 def allowed_file(filename):
@@ -1046,8 +1047,9 @@ def patient_info():
                     if allowed_file(filename):
                         # Add insurance card to uploads folder
                         upload_form.file.data.save(f'uploads/{filename}')
-                        file_url = upload_to_bucket(f'Insurance_Uploads/{patient.username}_{date.today()}_v{version}',
-                                                    f'uploads/{filename}', os.getenv('BUCKET_NAME')).encode()
+                        # GCP
+                        # file_url = upload_to_bucket(f'Insurance_Uploads/{patient.username}_{date.today()}_v{version}',
+                                                    # f'uploads/{filename}', os.getenv('BUCKET_NAME')).encode()
                         encrypted_url = fernet.encrypt(file_url).decode()
                         patient.insurance_url = encrypted_url
                         db.session.commit()
