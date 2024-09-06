@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 CREATE TABLE Pharmacy (
     id SERIAL,
     username varchar(255) NOT NULL,
