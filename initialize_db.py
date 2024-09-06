@@ -68,6 +68,8 @@ def main():
         # Run the SQL files to create tables and insert data
         run_sql_file('db_creation/create.sql', conn)
         run_sql_file('db_creation/insert.sql', conn)
+        print("Database was successfully initialized.")
+
     else:
         print("Database is not empty, skipping table creation and data insertion.")
 
