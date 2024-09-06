@@ -37,7 +37,10 @@ admin.add_view(ModelView(Availability, db.session))
 # authenticates specific user login based on id number
 @login.user_loader
 def load_user(user_id):
+    print("In here") #*
+    print(user_id) #*
     if Patient.query.filter_by(id=user_id).first():
+        print("Found") #*
         return Patient.query.get(user_id)
     elif Physician.query.filter_by(id=user_id).first():
         return Physician.query.get(user_id)

@@ -1,6 +1,8 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE Pharmacy (
+-- "" -> table name will exactly what is inside the quotes
+    -- otherwise PostgreSQL makes it lower case
+CREATE TABLE "Pharmacy" (
     id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -21,7 +23,7 @@ CREATE TABLE Pharmacy (
 -- ALTER TABLE Pharmacy AUTO_INCREMENT=200000;
 SELECT setval(pg_get_serial_sequence('Pharmacy', 'id'), 200000, false);
 
-CREATE TABLE Hospital (
+CREATE TABLE "Hospital" (
     id SERIAL,
     hospital_name varchar(255) NOT NULL,
     building_num int NOT NULL,
@@ -36,7 +38,7 @@ CREATE TABLE Hospital (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Physician (
+CREATE TABLE "Physician" (
     id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -51,7 +53,7 @@ CREATE TABLE Physician (
 -- ALTER TABLE Physician AUTO_INCREMENT=300000;
 SELECT setval(pg_get_serial_sequence('Physician', 'id'), 300000, false);
 
-CREATE TABLE Patient (
+CREATE TABLE "Patient" (
     id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -77,7 +79,7 @@ CREATE TABLE Patient (
 SELECT setval(pg_get_serial_sequence('Patient', 'id'), 100000, false);
 
 -- id -> patient_id
-CREATE TABLE Patient_allergies (
+CREATE TABLE "Patient_allergies" (
     patient_id int,
     allergy_name varchar(255),
     FOREIGN KEY (patient_id) REFERENCES Patient(id),
@@ -85,7 +87,7 @@ CREATE TABLE Patient_allergies (
 );
 
 -- id -> patient_id
-CREATE TABLE Patient_diseases (
+CREATE TABLE "Patient_diseases" (
     patient_id int,
     disease_name varchar(255),
     FOREIGN KEY (patient_id) REFERENCES Patient(id),
@@ -93,7 +95,7 @@ CREATE TABLE Patient_diseases (
 );
 
 
-CREATE TABLE Medication (
+CREATE TABLE "Medication" (
     id SERIAL,
     medication_name varchar(255) NOT NULL,
     side_effects varchar(510) NOT NULL,
@@ -105,7 +107,7 @@ CREATE TABLE Medication (
 -- edit
 -- id -> patient_id
 -- medication_id added, medication_name eventually removed
-CREATE TABLE Patient_medications (
+CREATE TABLE "Patient_medications" (
     patient_id int,
     medication_id int NOT NULL,
     medication_name varchar(255) NOT NULL,
@@ -123,7 +125,7 @@ CREATE TABLE Patient_medications (
     PRIMARY KEY(patient_id, medication_id)
 );
 
-CREATE TABLE Refill_notifications (
+CREATE TABLE "Refill_notifications" (
     id SERIAL,
     patient_id int NOT NULL,
     medication_id int NOT NULL,
@@ -138,7 +140,7 @@ CREATE TABLE Refill_notifications (
 
 -- id -> patient_id
 -- medication_id added, medication_name eventually removed
-CREATE TABLE Medication_notes (
+CREATE TABLE "Medication_notes" (
     patient_id int,
     medication_id int,
     physician_id int,
@@ -149,7 +151,7 @@ CREATE TABLE Medication_notes (
     PRIMARY KEY(patient_id, medication_id, physician_id)
 );
 
-CREATE TABLE Treats (
+CREATE TABLE "Treats" (
     physician_id int,
     patient_id int,
     FOREIGN KEY (physician_id) REFERENCES Physician(id),
@@ -158,7 +160,7 @@ CREATE TABLE Treats (
 );
 
 -- medication_id added, medication_name eventually removed
-CREATE TABLE Pharmacy_auto_refills (
+CREATE TABLE "Pharmacy_auto_refills" (
     pharmacy_id int,
     patient_id int,
     medication_id int,
@@ -170,7 +172,7 @@ CREATE TABLE Pharmacy_auto_refills (
     PRIMARY KEY (pharmacy_id, patient_id, medication_id)
 );
 
-CREATE TABLE Chats (
+CREATE TABLE "Chats" (
     id SERIAL,
     patient_id int NOT NULL,
     physician_id int NOT NULL,
@@ -183,7 +185,7 @@ CREATE TABLE Chats (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Availability (
+CREATE TABLE "Availability" (
     id SERIAL,
     available_date DATE NOT NULL,
     available_time TIME NOT NULL,
