@@ -3,6 +3,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from dotenv import load_dotenv
 import os
 from sqlalchemy import DateTime, func
+from geoalchemy2 import Geography
 
 from .extensions import db
 
@@ -23,7 +24,7 @@ class Pharmacy(UserMixin, db.Model):
     city = db.Column(db.String(255), nullable=False)
     state = db.Column(db.String(255), nullable=False)
     zip_code = db.Column(db.Integer, nullable=False)
-    coord = db.Column(db.Text, nullable=False)
+    coord = db.Column(Geography(geometry_type='POINT', srid=4326), nullable=False)
     phone_number = db.Column(db.String(255), nullable=False)
 
     def get_token(self):
@@ -90,7 +91,7 @@ class Hospital(UserMixin, db.Model):
     city = db.Column(db.String(255), nullable=False)
     state = db.Column(db.String(255), nullable=False)
     zip_code = db.Column(db.Integer, nullable=False)
-    coord = db.Column(db.Text, nullable=False)
+    coord = db.Column(Geography(geometry_type='POINT', srid=4326), nullable=False)
     phone_number = db.Column(db.String(255), nullable=False)
 
 class Physician(UserMixin, db.Model):

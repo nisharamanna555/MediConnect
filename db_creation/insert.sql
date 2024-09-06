@@ -1,14 +1,14 @@
-INSERT INTO Pharmacy(username, password, pharmacy_name, email, building_num, street_name, city, state, zip_code, coord, phone_number) VALUES ('DR', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Duane Reade', 'duanereade@example.com', '386', 'Fulton St', 'Brooklyn', 'NY', 11201, POINT(40.691331310921875, -73.98723322800296), '(718) 330-0363'), 
-('CVS', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'CVS Pharmacy', 'cvs@example.com','217', 'Broadway', 'New York', 'NY', 10007, POINT(40.711878583096414, -74.0086964544864), '(212) 331-7895'),
-('Walgreens', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Walgreens', 'walgreens@example.com', '120', 'Court St', 'Brooklyn', 'NY', 11201, POINT(40.69150908529599, -73.99261230709112), '(718) 643-2146'),
-('BHS', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Brooklyn Hospital Center', 'bhs@example.com', '86', 'Fleet Pl', 'Brooklyn', 'NY', 11201, POINT(40.695111885907956, -73.98193649056897), '(718) 250-7998'),
-('LC', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Liberty Chemists', 'giancab.retail@gmail.com', '1501', 'Newkirk Avenue', 'Brooklyn', 'NY', 11226, POINT(40.636433829508185, -73.9632823355658), '(718) 676-5995');
+INSERT INTO Pharmacy(username, password, pharmacy_name, email, building_num, street_name, city, state, zip_code, coord, phone_number) VALUES ('DR', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Duane Reade', 'duanereade@example.com', '386', 'Fulton St', 'Brooklyn', 'NY', 11201, ST_GeogFromText('SRID=4326;POINT(-73.98723322800296 40.691331310921875)'), '(718) 330-0363'), 
+('CVS', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'CVS Pharmacy', 'cvs@example.com','217', 'Broadway', 'New York', 'NY', 10007, ST_GeogFromText('SRID=4326;POINT(-74.0086964544864 40.711878583096414)'), '(212) 331-7895'),
+('Walgreens', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Walgreens', 'walgreens@example.com', '120', 'Court St', 'Brooklyn', 'NY', 11201, ST_GeogFromText('SRID=4326;POINT(-73.99261230709112 40.69150908529599)'), '(718) 643-2146'),
+('BHS', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Brooklyn Hospital Center', 'bhs@example.com', '86', 'Fleet Pl', 'Brooklyn', 'NY', 11201, ST_GeogFromText('SRID=4326;POINT(-73.98193649056897 40.695111885907956)'), '(718) 250-7998'),
+('LC', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Liberty Chemists', 'giancab.retail@gmail.com', '1501', 'Newkirk Avenue', 'Brooklyn', 'NY', 11226, ST_GeogFromText('SRID=4326;POINT(-73.9632823355658 40.636433829508185)'), '(718) 676-5995');
  
-INSERT INTO Hospital(hospital_name, building_num, street_name, city, state, zip_code, coord, phone_number) VALUES ('Mount Sinai Medical Center', '300', 'Cadman Plz W', 'Brooklyn', 'NY', 11201, POINT(40.70042412470124, -73.991819046455), '(929) 210-6000'),
-('The Brooklyn Hospital Center', '121', 'Dekalb Ave', 'Brooklyn', 'NY', 11201, POINT(40.69531888856064, -73.97944296941733), '(718) 250-8000'),
-('New York Presbyterian Brooklyn Methodist Hospital', '536', '5th St', 'Brooklyn', 'NY', 11215, POINT(40.67249032164987, -73.97824771667521), '(718) 943-4343'),
-('NYC Health + Hospitals/Bellevue', '426', '1st Ave', 'New York', 'NY', 10016, POINT(40.741608144919944, -73.97637945249116), '(212) 562-5555'),
-('Presbyterian Lower Manhattan Hospital', '170', 'William St', 'New York', 'NY', 10038, POINT(40.71465459704797, -74.00562137678385), '(212) 312-5000');
+INSERT INTO Hospital(hospital_name, building_num, street_name, city, state, zip_code, coord, phone_number) VALUES ('Mount Sinai Medical Center', '300', 'Cadman Plz W', 'Brooklyn', 'NY', 11201, ST_GeogFromText('SRID=4326;POINT(-73.991819046455 40.70042412470124)'), '(929) 210-6000'),
+('The Brooklyn Hospital Center', '121', 'Dekalb Ave', 'Brooklyn', 'NY', 11201, ST_GeogFromText('SRID=4326;POINT(-73.97944296941733 40.69531888856064)'), '(718) 250-8000'),
+('New York Presbyterian Brooklyn Methodist Hospital', '536', '5th St', 'Brooklyn', 'NY', 11215, ST_GeogFromText('SRID=4326;POINT(-73.97824771667521 40.67249032164987)'), '(718) 943-4343'),
+('NYC Health + Hospitals/Bellevue', '426', '1st Ave', 'New York', 'NY', 10016, ST_GeogFromText('SRID=4326;POINT(-73.97637945249116 40.741608144919944)'), '(212) 562-5555'),
+('Presbyterian Lower Manhattan Hospital', '170', 'William St', 'New York', 'NY', 10038, ST_GeogFromText('SRID=4326;POINT(-74.00562137678385 40.71465459704797)'), '(212) 312-5000');
 
 INSERT INTO Physician(username, password, first_name, last_name, email, phone_number, hospital_id) VALUES ('RM', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Ryan', 'Mire', 'ryanmire@example.com', '(212) 345-6789', 1),
 ('AG', '$2b$12$OOpl10h9IgErLCaoU0SmBeZH4tdtAivEWJ85qukmCAwK63zuwiptO', 'Alec', 'Goldenberg', 'alexgoldenberg@example.com', '(646) 789-0123', 2),

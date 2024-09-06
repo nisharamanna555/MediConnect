@@ -1,5 +1,5 @@
 CREATE TABLE Pharmacy (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     pharmacy_name varchar(255) NOT NULL,
@@ -10,14 +10,17 @@ CREATE TABLE Pharmacy (
 	city varchar(255) NOT NULL,
 	state varchar(255) NOT NULL,
 	zip_code int NOT NULL,
-    coord point NOT NULL,
+    -- longitude latitude
+    -- coord point NOT NULL,
+    coord GEOGRAPHY(POINT, 4326) NOT NULL,
     phone_number varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
-ALTER TABLE Pharmacy AUTO_INCREMENT=200000;
+-- ALTER TABLE Pharmacy AUTO_INCREMENT=200000;
+SELECT setval(pg_get_serial_sequence('Pharmacy', 'id'), 200000, false);
 
 CREATE TABLE Hospital (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     hospital_name varchar(255) NOT NULL,
     building_num int NOT NULL,
 	street_name varchar(255) NOT NULL,
@@ -25,13 +28,14 @@ CREATE TABLE Hospital (
 	city varchar(255) NOT NULL,
 	state varchar(255) NOT NULL,
 	zip_code int NOT NULL,
-    coord point NOT NULL,
+    -- coord point NOT NULL,
+    coord GEOGRAPHY(POINT, 4326) NOT NULL,
     phone_number varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE Physician (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     first_name varchar(255) NOT NULL,
@@ -42,10 +46,11 @@ CREATE TABLE Physician (
     FOREIGN KEY (hospital_id) REFERENCES Hospital(id),
     PRIMARY KEY(id)
 );
-ALTER TABLE Physician AUTO_INCREMENT=300000;
+-- ALTER TABLE Physician AUTO_INCREMENT=300000;
+SELECT setval(pg_get_serial_sequence('Physician', 'id'), 300000, false);
 
 CREATE TABLE Patient (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     username varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     first_name varchar(255) NOT NULL,
@@ -63,11 +68,11 @@ CREATE TABLE Patient (
 	zip_code int NOT NULL,
     pharmacy_id int NOT NULL,
     insurance_url varchar(510),
-    
     FOREIGN KEY (pharmacy_id) REFERENCES Pharmacy(id),
     PRIMARY KEY (id)
 );
-ALTER TABLE Patient AUTO_INCREMENT=100000;
+-- ALTER TABLE Patient AUTO_INCREMENT=100000;
+SELECT setval(pg_get_serial_sequence('Patient', 'id'), 100000, false);
 
 -- id -> patient_id
 CREATE TABLE Patient_allergies (
@@ -87,7 +92,7 @@ CREATE TABLE Patient_diseases (
 
 
 CREATE TABLE Medication (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     medication_name varchar(255) NOT NULL,
     side_effects varchar(510) NOT NULL,
     instruction_vid_name varchar(255),
@@ -117,7 +122,7 @@ CREATE TABLE Patient_medications (
 );
 
 CREATE TABLE Refill_notifications (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     patient_id int NOT NULL,
     medication_id int NOT NULL,
     pharmacy_id int NOT NULL,
@@ -164,7 +169,7 @@ CREATE TABLE Pharmacy_auto_refills (
 );
 
 CREATE TABLE Chats (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     patient_id int NOT NULL,
     physician_id int NOT NULL,
     content TEXT NOT NULL,
@@ -177,7 +182,7 @@ CREATE TABLE Chats (
 );
 
 CREATE TABLE Availability (
-    id int AUTO_INCREMENT,
+    id SERIAL,
     available_date DATE NOT NULL,
     available_time TIME NOT NULL,
     status varchar(255) NOT NULL,
@@ -187,4 +192,3 @@ CREATE TABLE Availability (
     FOREIGN KEY (physician_id) REFERENCES Physician(id),
     PRIMARY KEY (id)
 );
-

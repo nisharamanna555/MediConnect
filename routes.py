@@ -168,8 +168,8 @@ def get_coordinates_spec(patient_id):
         if patient:
             pharmacy_coords = db.session.query(
                 Pharmacy.id.label('id'),
-                func.ST_X(Pharmacy.coord).label('latitude'),
-                func.ST_Y(Pharmacy.coord).label('longitude'),
+                func.ST_Latitude(Pharmacy.coord).label('latitude'),
+                func.ST_Longitude(Pharmacy.coord).label('longitude'),
                 Pharmacy.phone_number.label('phone_number'),
                 Pharmacy.pharmacy_name.label('pharmacy_name'),
                 Pharmacy.building_num.label('building_num'),
@@ -195,8 +195,8 @@ def get_coordinates_all():
     try:
         pharmacy_coords = db.session.query(
             Pharmacy.id.label('id'),
-            func.ST_X(Pharmacy.coord).label('latitude'),
-            func.ST_Y(Pharmacy.coord).label('longitude'),
+            func.ST_Latitude(Pharmacy.coord).label('latitude'),
+            func.ST_Longitude(Pharmacy.coord).label('longitude'),
             Pharmacy.phone_number.label('phone_number'),
             Pharmacy.pharmacy_name.label('pharmacy_name'),
             Pharmacy.building_num.label('building_num'),

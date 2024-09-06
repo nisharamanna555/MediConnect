@@ -38,7 +38,7 @@ def create_app():
     admin.init_app(app)
     bcrypt.init_app(app)
 
-
+    # GCP
     # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "db_creds.json"
     
     from .routes import main
