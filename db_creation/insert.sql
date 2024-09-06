@@ -61,6 +61,8 @@ INSERT INTO Patient(username, password, first_name, last_name, d_o_b, sex, email
 
 INSERT INTO Patient_allergies VALUES (100000, 'Peanuts'), (100000, 'Peaches'), (100000, 'Dogs'), (100000, 'Penicillin');
 
+INSERT INTO Patient_diseases VALUES (100000, 'Asthma'), (100000, 'Diabetes'), (100000, 'ADHD'), (100000, 'Arthritis');
+
 INSERT INTO Medication(medication_name, side_effects) VALUES ('Lexapro', 'Decreased appetite, Nausea, Trouble sleeping, Confusion'), ('Lipitor', 'Joint pain, Muscle stiffness, Chest pain'), ('Zestril', 'Blurred vision, Dizziness, Rash');
 INSERT INTO Medication(medication_name, side_effects, instruction_vid_name, instruction_vid_url) VALUES ('Asthma Inhaler', 'Cough, Horseness, Palpitations', 'How to Use an Asthma Inhaler', 'https://storage.cloud.google.com/sql4523/How%20to%20Use%20an%20Inhaler.mp4');
 INSERT INTO Medication(medication_name, side_effects) VALUES ('Gabapentin', 'Swollen limbs, Dizziness');
@@ -74,7 +76,5 @@ INSERT INTO Patient_medications(patient_id, medication_id, medication_name, dosa
 INSERT INTO Patient_medications(patient_id, medication_id, medication_name, dosage, frequency, days_supply, prescription_valid_till, physician_id, date_prescribed, phys_note) VALUES (100001, 1, 'Lexapro', '100mg', 'Daily', 30, '2025-02-22', 300000, '2024-02-22', 'If this drug affects your sleep, please take 30mg of melatonin at night.');
 INSERT INTO Patient_medications(patient_id, medication_id, medication_name, dosage, frequency, days_supply, prescription_valid_till, physician_id, date_prescribed, phys_note) VALUES (100001, 2, 'Lipitor', '20mg', '2x Daily', 90, '2025-01-01', 300002, '2024-01-01', 'Please remember to take Lipitor at the same time each day, and note that you might experience mild muscle pain, which is a common side effect; however, contact me if you experience severe muscle pain or weakness.');
 INSERT INTO Patient_medications(patient_id, medication_id, medication_name, dosage, frequency, days_supply, prescription_valid_till, physician_id, date_prescribed, phys_note) VALUES (100001, 3, 'Zestril', '50mg', 'Daily', 30, '2024-09-18', 300003, '2023-09-18', 'Be cautious about possible dizziness during the first few days on Zestril, especially when standing up quickly, as this medication can lower your blood pressure significantly.');
-
-INSERT INTO Patient_diseases VALUES (100000, 'Asthma'), (100000, 'Diabetes'), (100000, 'ADHD'), (100000, 'Arthritis');
 
 INSERT INTO Availability(available_date, available_time, status, physician_id) VALUES ('2024-05-01', '12:30:00', 'appointment', 300000), ('2024-05-07', '15:45:00', 'requested', 300000), ('2024-05-10', '03:00:00', 'appointment', 300000)
