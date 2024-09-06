@@ -20,6 +20,28 @@ def database_is_empty(conn):
         table_count = cursor.fetchone()[0]
         return table_count == 0
     
+
+
+# Function to drop all tables in the database
+def drop_all_tables(conn):
+    with conn.cursor() as cursor:
+        cursor.execute("""
+            DO $$ 
+            DECLARE
+                r RECORD;
+            BEGIN
+                -- Dynamically generate and execute the DROP command for each table
+                FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+                    EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+                END LOOP;
+            END $$;
+        """)
+        conn.commit()
+        print("All existing tables have been dropped.")
+
+
+
+
 def main():
     load_dotenv()
     db_url = os.getenv('DATABASE_URL')
@@ -28,6 +50,14 @@ def main():
     
     # connect to the PostgreSQL database
     conn = psycopg2.connect(db_url)
+
+
+
+
+    drop_all_tables(conn)
+
+
+
 
     # run the SQL files to create tables and insert data if database is empty
     if database_is_empty(conn):
