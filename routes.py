@@ -9,13 +9,13 @@ from datetime import date, timedelta, datetime
 from cryptography.fernet import Fernet
 
 from google.cloud import storage
-from . import socketio
+from init import socketio
 
 
-from .db_classes import *
-from .extensions import login, db, mail, admin, bcrypt
-from .forms import *
-from .routing_protection import *
+from db_classes import *
+from extensions import login, db, mail, admin, bcrypt
+from forms import *
+from routing_protection import *
 
 
 main = Blueprint("main", __name__)

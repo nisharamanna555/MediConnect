@@ -3,7 +3,7 @@ from flask import Flask
 import os
 from flask_socketio import SocketIO
 
-from .extensions import db, login, mail, admin, bcrypt
+from extensions import db, login, mail, admin, bcrypt
 
 socketio = SocketIO()
 def create_app():
@@ -41,7 +41,7 @@ def create_app():
     # GCP
     # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "db_creds.json"
     
-    from .routes import main
+    from routes import main
     app.register_blueprint(main)
     
     return app

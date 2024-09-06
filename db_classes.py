@@ -5,7 +5,7 @@ import os
 from sqlalchemy import DateTime, func
 from geoalchemy2 import Geography
 
-from .extensions import db
+from extensions import db
 
 
 load_dotenv()
