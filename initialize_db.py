@@ -30,14 +30,18 @@ def drop_all_tables(conn):
             DECLARE
                 r RECORD;
             BEGIN
-                -- Dynamically generate and execute the DROP command for each table
-                FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+                -- Dynamically generate and execute the DROP command for each table, excluding system tables
+                FOR r IN (SELECT tablename 
+                          FROM pg_tables 
+                          WHERE schemaname = 'public' 
+                          AND tablename NOT IN ('spatial_ref_sys')) LOOP
                     EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
                 END LOOP;
             END $$;
         """)
         conn.commit()
-        print("All existing tables have been dropped.")
+        print("All existing tables (except system tables) have been dropped.")
+
 
 
 
