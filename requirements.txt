@@ -28,7 +28,7 @@ click==8.1.7
 cloudpickle==3.0.0
 # colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
 comm==0.2.0
-conda==23.3.1
+# conda==23.3.1
 # conda-libmamba-solver @ file:///home/conda/feedstock_root/build_artifacts/conda-libmamba-solver_1680508672016/work/src
 # conda-package-handling @ file:///home/conda/feedstock_root/build_artifacts/conda-package-handling_1691048088238/work
 # conda_package_streaming @ file:///home/conda/feedstock_root/build_artifacts/conda-package-streaming_1691009212940/work
