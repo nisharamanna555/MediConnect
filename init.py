@@ -21,9 +21,17 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        'pool_pre_ping': True
+        'pool_pre_ping': True,  # Avoid stale connections
+        'pool_size': 10,        # Number of connections in the pool
+        'max_overflow': 20,     # Number of overflow connections
+        'pool_timeout': 30,     # Timeout for acquiring connections (seconds)
+        'pool_recycle': 1800    # Recycle connections every 30 minutes
     }
-
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'connect_args': {
+            'options': '-c statement_timeout=60000'  # 60 seconds timeout
+        }
+    }
     # configure email system
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587

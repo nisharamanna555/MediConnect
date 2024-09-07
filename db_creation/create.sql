@@ -47,11 +47,11 @@ CREATE TABLE "Physician" (
     email varchar(255) NOT NULL,
     phone_number varchar(255) NOT NULL,
     hospital_id int NOT NULL,
-    FOREIGN KEY (hospital_id) REFERENCES Hospital(id),
+    FOREIGN KEY (hospital_id) REFERENCES "Hospital"(id),
     PRIMARY KEY(id)
 );
 -- ALTER TABLE Physician AUTO_INCREMENT=300000;
-SELECT setval(pg_get_serial_sequence('Physician', 'id'), 300000, false);
+SELECT setval(pg_get_serial_sequence('"Physician"', 'id'), 300000, false);
 
 CREATE TABLE "Patient" (
     id SERIAL,
@@ -72,17 +72,17 @@ CREATE TABLE "Patient" (
 	zip_code int NOT NULL,
     pharmacy_id int NOT NULL,
     insurance_url varchar(510),
-    FOREIGN KEY (pharmacy_id) REFERENCES Pharmacy(id),
+    FOREIGN KEY (pharmacy_id) REFERENCES "Pharmacy"(id),
     PRIMARY KEY (id)
 );
 -- ALTER TABLE Patient AUTO_INCREMENT=100000;
-SELECT setval(pg_get_serial_sequence('Patient', 'id'), 100000, false);
+SELECT setval(pg_get_serial_sequence('"Patient"', 'id'), 100000, false);
 
 -- id -> patient_id
 CREATE TABLE "Patient_allergies" (
     patient_id int,
     allergy_name varchar(255),
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
     PRIMARY KEY(patient_id, allergy_name)
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE "Patient_allergies" (
 CREATE TABLE "Patient_diseases" (
     patient_id int,
     disease_name varchar(255),
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
     PRIMARY KEY(patient_id, disease_name)
 );
 
@@ -119,9 +119,9 @@ CREATE TABLE "Patient_medications" (
     date_prescribed date NOT NULL,
     next_refill_date date,
     phys_note varchar(510),
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (medication_id) REFERENCES Medication(id),
-    FOREIGN KEY (physician_id) REFERENCES Physician(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (medication_id) REFERENCES "Medication"(id),
+    FOREIGN KEY (physician_id) REFERENCES "Physician"(id),
     PRIMARY KEY(patient_id, medication_id)
 );
 
@@ -132,9 +132,9 @@ CREATE TABLE "Refill_notifications" (
     pharmacy_id int NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     is_read BOOLEAN DEFAULT FALSE NOT NULL,
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (medication_id) REFERENCES Medication(id),
-    FOREIGN KEY (pharmacy_id) REFERENCES Pharmacy(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (medication_id) REFERENCES "Medication"(id),
+    FOREIGN KEY (pharmacy_id) REFERENCES "Pharmacy"(id),
     PRIMARY KEY(id)
 );
 
@@ -145,17 +145,17 @@ CREATE TABLE "Medication_notes" (
     medication_id int,
     physician_id int,
     notes varchar(510) NOT NULL,
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (medication_id) REFERENCES Medication(id),
-    FOREIGN KEY (physician_id) REFERENCES Physician(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (medication_id) REFERENCES "Medication"(id),
+    FOREIGN KEY (physician_id) REFERENCES "Physician"(id),
     PRIMARY KEY(patient_id, medication_id, physician_id)
 );
 
 CREATE TABLE "Treats" (
     physician_id int,
     patient_id int,
-    FOREIGN KEY (physician_id) REFERENCES Physician(id),
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
+    FOREIGN KEY (physician_id) REFERENCES "Physician"(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
     PRIMARY KEY (physician_id, patient_id)
 );
 
@@ -166,9 +166,9 @@ CREATE TABLE "Pharmacy_auto_refills" (
     medication_id int,
     medication_name varchar(255),
     is_complete BOOLEAN NOT NULL,
-    FOREIGN KEY (pharmacy_id) REFERENCES Pharmacy(id),
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (medication_id) REFERENCES Medication(id),
+    FOREIGN KEY (pharmacy_id) REFERENCES "Pharmacy"(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (medication_id) REFERENCES "Medication"(id),
     PRIMARY KEY (pharmacy_id, patient_id, medication_id)
 );
 
@@ -180,8 +180,8 @@ CREATE TABLE "Chats" (
     sent_by varchar(255) NOT NULL,
     sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     is_read BOOLEAN DEFAULT FALSE NOT NULL,
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (physician_id) REFERENCES Physician(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (physician_id) REFERENCES "Physician"(id),
     PRIMARY KEY (id)
 );
 
@@ -192,7 +192,7 @@ CREATE TABLE "Availability" (
     status varchar(255) NOT NULL,
     physician_id int NOT NULL,
     patient_id int,
-    FOREIGN KEY (patient_id) REFERENCES Patient(id),
-    FOREIGN KEY (physician_id) REFERENCES Physician(id),
+    FOREIGN KEY (patient_id) REFERENCES "Patient"(id),
+    FOREIGN KEY (physician_id) REFERENCES "Physician"(id),
     PRIMARY KEY (id)
 );
