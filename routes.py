@@ -37,10 +37,7 @@ admin.add_view(ModelView(Availability, db.session))
 # authenticates specific user login based on id number
 @login.user_loader
 def load_user(user_id):
-    print("In here") #*
-    print(user_id) #*
     if Patient.query.filter_by(id=user_id).first():
-        print("Found") #*
         return Patient.query.get(user_id)
     elif Physician.query.filter_by(id=user_id).first():
         return Physician.query.get(user_id)
@@ -62,7 +59,7 @@ def login():
         user_type = user_mapping.get(form.user.data)
         user = user_type.query.filter_by(username=form.username.data).first()
         try:
-            if user and bcrypt.check_password_hash(user.password, form.password.data):
+            if user and user.password == form.password.data:
                 login_user(user)
                 session['logged_in'] = True
                 if type(user) == type(Patient.query.filter_by().first()):
@@ -74,7 +71,9 @@ def login():
                 if type(user) == type(Pharmacy.query.filter_by().first()):
                     session['usertype'] = 'pharmacy'
                     return redirect(url_for('main.pharmacy'))
-        except:
+        except Exception as e:
+            print(f"Error: {e}")  # Print the exception for debugging
+
             flash('Login not found', category='danger')
             return redirect(url_for('main.login'))
     return render_template('login.html', form=form)
@@ -171,8 +170,8 @@ def get_coordinates_spec(patient_id):
         if patient:
             pharmacy_coords = db.session.query(
                 Pharmacy.id.label('id'),
-                func.ST_Latitude(Pharmacy.coord).label('latitude'),
-                func.ST_Longitude(Pharmacy.coord).label('longitude'),
+                func.ST_Y(Pharmacy.coord).label('latitude'),
+                func.ST_X(Pharmacy.coord).label('longitude'),
                 Pharmacy.phone_number.label('phone_number'),
                 Pharmacy.pharmacy_name.label('pharmacy_name'),
                 Pharmacy.building_num.label('building_num'),
@@ -198,8 +197,8 @@ def get_coordinates_all():
     try:
         pharmacy_coords = db.session.query(
             Pharmacy.id.label('id'),
-            func.ST_Latitude(Pharmacy.coord).label('latitude'),
-            func.ST_Longitude(Pharmacy.coord).label('longitude'),
+            func.ST_Y(Pharmacy.coord).label('latitude'),
+            func.ST_X(Pharmacy.coord).label('longitude'),
             Pharmacy.phone_number.label('phone_number'),
             Pharmacy.pharmacy_name.label('pharmacy_name'),
             Pharmacy.building_num.label('building_num'),
@@ -854,7 +853,6 @@ def maps():
         response2, status_code2 = get_coordinates_all()
         if status_code2 == 200:
             all_coords = response2.get_json()
-            print('ogay')
             return render_template('maps.html', coordinates=center_coords, all_coords=all_coords, patient_id=patient_id)
         else:
             error_message = "An error occurred while retrieving all coordinates."

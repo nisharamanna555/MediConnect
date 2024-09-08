@@ -15,8 +15,7 @@ CREATE TABLE "Pharmacy" (
 	state varchar(255) NOT NULL,
 	zip_code int NOT NULL,
     -- longitude latitude
-    -- coord point NOT NULL,
-    coord GEOGRAPHY(POINT, 4326) NOT NULL,
+    coord GEOMETRY(POINT, 4326) NOT NULL,
     phone_number varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -32,8 +31,7 @@ CREATE TABLE "Hospital" (
 	city varchar(255) NOT NULL,
 	state varchar(255) NOT NULL,
 	zip_code int NOT NULL,
-    -- coord point NOT NULL,
-    coord GEOGRAPHY(POINT, 4326) NOT NULL,
+    coord GEOMETRY(POINT, 4326) NOT NULL,
     phone_number varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
